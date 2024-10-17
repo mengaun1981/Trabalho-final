@@ -1,0 +1,86 @@
+### **JavaScript Explicado**
+
+```javascript
+const formulario = document.getElementById('cadastroForm');
+```
+Esta linha seleciona o elemento do formulário na página HTML, que possui o `id` "cadastroForm", e armazena esse elemento na variável `formulario`. Isso permite que o script interaja com o formulário, por exemplo, para adicionar um evento de submissão.
+
+```javascript
+const tabela = document.getElementById('tabelaCadastros').getElementsByTagName('tbody')[0];
+```
+Aqui, selecionamos a tabela que possui o `id` "tabelaCadastros" e, dentro dela, obtemos o elemento `<tbody>`. O uso de `[0]` é para garantir que pegamos o primeiro `<tbody>` encontrado, onde serão adicionadas as novas linhas de cadastro.
+
+```javascript
+let cadastros = [];
+```
+Esta linha cria um array vazio chamado `cadastros`, que será usado para armazenar objetos contendo os dados de cada usuário cadastrado (nome e e-mail).
+
+```javascript
+function atualizarTabela() {
+    tabela.innerHTML = '';
+```
+A função `atualizarTabela` é responsável por limpar e atualizar a tabela na interface. A primeira linha dentro dela limpa todo o conteúdo do `<tbody>`, removendo todas as linhas existentes para que não haja duplicações quando a tabela for atualizada.
+
+```javascript
+    cadastros.forEach((cadastro, index) => {
+        const linha = tabela.insertRow();
+```
+O método `forEach` percorre todos os elementos no array `cadastros`. Para cada elemento (`cadastro`), uma nova linha é criada na tabela usando `insertRow()`. A variável `index` representa a posição do cadastro no array (0, 1, 2, ...).
+
+```javascript
+        const celulaNumero = linha.insertCell(0);
+        const celulaNome = linha.insertCell(1);
+        const celulaEmail = linha.insertCell(2);
+```
+Cada linha da tabela terá três células (colunas). Estas linhas criam três células na linha atual:
+- `celulaNumero` será usada para mostrar a posição do cadastro.
+- `celulaNome` para exibir o nome do usuário.
+- `celulaEmail` para mostrar o e-mail do usuário.
+
+```javascript
+        celulaNumero.textContent = index + 1;
+        celulaNome.textContent = cadastro.nome;
+        celulaEmail.textContent = cadastro.email;
+    });
+}
+```
+Aqui, o conteúdo de cada célula é definido:
+- `celulaNumero` mostra o índice do cadastro incrementado em 1 (para começar de 1 em vez de 0).
+- `celulaNome` e `celulaEmail` exibem, respectivamente, o nome e o e-mail obtidos do objeto `cadastro`.
+
+```javascript
+formulario.addEventListener('submit', function(evento) {
+    evento.preventDefault();
+```
+Esta linha adiciona um ouvinte de evento ao formulário para a ação de submissão. O `evento.preventDefault()` impede o comportamento padrão do navegador de recarregar a página ao enviar o formulário, permitindo que o código JavaScript manipule a submissão.
+
+```javascript
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
+```
+Estas linhas capturam os valores dos campos de entrada de texto para "nome" e "e-mail" no formulário e os armazenam em variáveis. O método `trim()` remove quaisquer espaços extras no início ou no fim dos valores.
+
+```javascript
+    if (nome === '' || email === '') {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+```
+Esta é uma verificação simples para garantir que nenhum dos campos está vazio. Se `nome` ou `email` estiver vazio, uma mensagem de alerta será exibida e a função será encerrada com o `return`, impedindo que o cadastro seja processado.
+
+```javascript
+    cadastros.push({ nome, email });
+```
+Aqui, um novo objeto contendo o `nome` e `email` capturados é adicionado ao array `cadastros`.
+
+```javascript
+    atualizarTabela();
+```
+Depois que o novo cadastro é adicionado ao array, a função `atualizarTabela()` é chamada para redesenhar a tabela e incluir o novo cadastro.
+
+```javascript
+    formulario.reset();
+});
+```
+Por fim, o método `reset()` limpa todos os campos do formulário, preparando-o para um novo cadastro.
+
